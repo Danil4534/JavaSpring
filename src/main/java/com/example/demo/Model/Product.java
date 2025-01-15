@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "User_id_gen")
+    @SequenceGenerator(name = "User_id_gen", sequenceName = "User_id_seq", allocationSize = 1)
+    @Column(name = "id", nullable = false )
     private Long id;
 
     @Column( name = "name")
