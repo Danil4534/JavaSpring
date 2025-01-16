@@ -33,7 +33,9 @@ public class ProductService {
         oldProduct.setCount(product.getCount());
         return productRepository.save(oldProduct);
     }
-    public void deleteProduct(Long id) {
-        productRepository.deleteById(id);
+    public Product deleteProduct(Long id) {
+        Product oldProduct = this.findById(id);
+        productRepository.delete(oldProduct);
+        return oldProduct;
     }
 }
