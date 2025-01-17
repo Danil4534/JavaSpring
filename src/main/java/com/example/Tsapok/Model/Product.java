@@ -2,14 +2,15 @@ package com.example.Tsapok.Model;
 
 import jakarta.persistence.*;
 
+import java.util.UUID;
+
 @Entity
 @Table(name ="\"Product\"")
 public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "User_id_gen")
-    @SequenceGenerator(name = "User_id_gen", sequenceName = "User_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false )
-    private Long id;
+    private UUID id;
 
     @Column( name = "name")
     private String name;
@@ -32,10 +33,10 @@ public class Product {
         this.count = count;
 
     }
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
     public String getName() {
