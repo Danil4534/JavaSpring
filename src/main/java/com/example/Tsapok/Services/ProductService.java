@@ -1,7 +1,7 @@
-package com.example.demo.Services;
+package com.example.Tsapok.Services;
 
-import com.example.demo.Model.Product;
-import com.example.demo.ProductRepository;
+import com.example.Tsapok.Model.Product;
+import com.example.Tsapok.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

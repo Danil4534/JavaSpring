@@ -1,6 +1,6 @@
-package com.example.demo;
+package com.example.Tsapok;
 
-import com.example.demo.Model.User;
+import com.example.Tsapok.Model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {

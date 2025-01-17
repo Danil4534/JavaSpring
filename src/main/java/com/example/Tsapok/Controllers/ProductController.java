@@ -1,7 +1,7 @@
-package com.example.demo.Controllers;
+package com.example.Tsapok.Controllers;
 
-import com.example.demo.Model.Product;
-import com.example.demo.Services.ProductService;
+import com.example.Tsapok.Model.Product;
+import com.example.Tsapok.Services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

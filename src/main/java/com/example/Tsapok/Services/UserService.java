@@ -1,7 +1,7 @@
-package com.example.demo.Services;
+package com.example.Tsapok.Services;
 
-import com.example.demo.Model.User;
-import com.example.demo.UserRepository;
+import com.example.Tsapok.Model.User;
+import com.example.Tsapok.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

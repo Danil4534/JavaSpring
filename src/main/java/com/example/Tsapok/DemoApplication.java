@@ -1,9 +1,9 @@
-package com.example.demo;
+package com.example.Tsapok;
 
-import com.example.demo.Model.Product;
-import com.example.demo.Model.User;
-import com.example.demo.Services.ProductService;
-import com.example.demo.Services.UserService;
+import com.example.Tsapok.Model.Product;
+import com.example.Tsapok.Model.User;
+import com.example.Tsapok.Services.ProductService;
+import com.example.Tsapok.Services.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
