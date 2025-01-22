@@ -28,7 +28,7 @@ public class DemoApplication {
 			ProductService productService = context.getBean(ProductService.class);
 			Product product = new Product("Apple", "MacBook", 35000, 2);
 			productService.createProduct(product);
-			userService.createUser(user);
+//			userService.createUser(user);
 		};
 	}
 

@@ -2,6 +2,7 @@ package com.example.Tsapok.Model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -15,13 +16,12 @@ public class Order {
     @Column(name = "id")
     private UUID id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User userId;
 
     @OneToMany
-    @JoinColumn(name="product_id")
-    private List<Product> products;
+    private List<Product> product;
 
     @Column(name="status")
     private String status;
@@ -31,19 +31,13 @@ public class Order {
 
     public Order() {}
 
-  public Order(User userId, List<Product> products, String status, Date CreateDate) {
+    public Order(User userId, List<Product> product, String status) {
         this.userId = userId;
-        this.products = products;
+        this.product = product;
         this.status = status;
-        this.CreateDate = CreateDate;
-  }
+        this.CreateDate = new Date();
+    }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
-    }
-    public User getUserId() {
-        return userId;
-    }
 
     public UUID getId() {
         return id;
@@ -51,6 +45,14 @@ public class Order {
     public void setId(UUID id) {
         this.id = id;
     }
+    public User getUserId() {
+        return userId;
+    }
+    public void setUserId(User userId) {
+        this.userId = userId;
+    }
+
+
 
     public String getStatus() {
         return status;
@@ -64,17 +66,13 @@ public class Order {
     public void setCreateDate(Date createDate) {
         CreateDate = createDate;
     }
+
+
+    public void setProducts(List<Product> product) {
+        this.product = product;
+    }
+
     public List<Product> getProducts() {
-        return products;
+        return product;
     }
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
-
-
-
-
-
-
-
 }

@@ -24,11 +24,16 @@ public class OrderController {
         List<Order> orders = orderService.getOrders();
         return ResponseEntity.ok(orders);
     }
-    @PostMapping("/createOrder/{products}")
-    public ResponseEntity<Order> createOrder( @PathVariable List<UUID> products) {
-        Order order = orderService.createOrder(products);
-        return ResponseEntity.ok(order);
+    @GetMapping("/orderStatus")
+    public ResponseEntity<String> getOrderStatus(@PathVariable UUID orderId) {
+        String status = orderService.getOrderStatus(orderId);
+        return ResponseEntity.ok(status);
     }
+//    @PostMapping("/createOrder/{products}/{userId}")
+//    public ResponseEntity<Order> createOrder( @PathVariable List<UUID> products, @PathVariable UUID userId) {
+//        Order order = orderService.createOrder(products, userId);
+//        return ResponseEntity.ok(order);
+//    }
     @PutMapping("/updateStatus/{id}/{status}")
     public ResponseEntity<Order> updateStatus(@PathVariable UUID id, @PathVariable String status) {
         Order order = orderService.getOrderById(id);

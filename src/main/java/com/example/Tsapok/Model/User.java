@@ -21,7 +21,7 @@ public class User {
     @Column(name = "password")
     private String password;
 
-     @ManyToMany()
+     @OneToMany()
      @JoinColumn(name="orders", nullable = true)
      private List<Order> orders;
 
