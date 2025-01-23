@@ -50,7 +50,7 @@ public class ProductController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable UUID id, @RequestBody Product product) {
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
         try {
             Product updatedProduct = productService.updateProduct(id, product);
             return ResponseEntity.ok(updatedProduct);
@@ -66,7 +66,7 @@ public class ProductController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Product> deleteProduct(@PathVariable UUID id) {
+    public ResponseEntity<Product> deleteProduct(@PathVariable Long id) {
         try {
             Product deleteProduct = productService.deleteProduct(id);
             return ResponseEntity.ok(deleteProduct);

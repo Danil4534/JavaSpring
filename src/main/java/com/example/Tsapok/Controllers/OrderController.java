@@ -1,6 +1,7 @@
 package com.example.Tsapok.Controllers;
 
 import com.example.Tsapok.Model.Order;
+import com.example.Tsapok.Model.User;
 import com.example.Tsapok.OrderRepository;
 import com.example.Tsapok.Services.OrderService;
 import jakarta.websocket.server.PathParam;
@@ -18,30 +19,33 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private OrderRepository orderRepository;
 
     @GetMapping()
     public ResponseEntity<List<Order>> orders() {
         List<Order> orders = orderService.getOrders();
         return ResponseEntity.ok(orders);
     }
-    @GetMapping("/orderStatus")
-    public ResponseEntity<String> getOrderStatus(@PathVariable UUID orderId) {
+    @GetMapping("/orderStatus/{orderId}")
+    public ResponseEntity<String> getOrderStatus(@PathVariable Long orderId) {
         String status = orderService.getOrderStatus(orderId);
         return ResponseEntity.ok(status);
     }
-//    @PostMapping("/createOrder/{products}/{userId}")
-//    public ResponseEntity<Order> createOrder( @PathVariable List<UUID> products, @PathVariable UUID userId) {
-//        Order order = orderService.createOrder(products, userId);
-//        return ResponseEntity.ok(order);
-//    }
-    @PutMapping("/updateStatus/{id}/{status}")
-    public ResponseEntity<Order> updateStatus(@PathVariable UUID id, @PathVariable String status) {
+    @PostMapping("/createOrder/{productId}/{userId}/{address}")
+    public ResponseEntity<Order> createOrder( @PathVariable Long productId, @PathVariable Long userId, @PathVariable String address) {
+        Order order = orderService.createOrder(productId, userId, address);
+        return ResponseEntity.ok(order);
+    }
+    @PutMapping("/updateAddress/{id}/{address}")
+    public ResponseEntity<Order> updateAddress(@PathVariable Long id, @PathVariable String address) {
         Order order = orderService.getOrderById(id);
-        order.setStatus(status);
-        return ResponseEntity.ok(orderService.getOrderById(id));
+        order.setAddress(address);
+        orderRepository.save(order);
+        return ResponseEntity.ok(order);
     }
     @PutMapping("/updateOrder/{id}")
-    public ResponseEntity<Order> updateOrder(@PathVariable UUID id, @RequestBody Order order) {
+    public ResponseEntity<Order> updateOrder(@PathVariable Long id, @RequestBody Order order) {
        try{
            Order order1 = orderService.updateOrder(id, order);
            return ResponseEntity.ok(order1);
@@ -49,8 +53,8 @@ public class OrderController {
            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
        }
     }
-    @DeleteMapping("/deleteOrder")
-    public ResponseEntity<Order> deleteOrder(@PathVariable UUID id) {
+    @DeleteMapping("/deleteOrder/{id}")
+    public ResponseEntity<Order> deleteOrder(@PathVariable Long id) {
         try{
             Order order = orderService.getOrderById(id);
             orderService.deleteOrderById(id);

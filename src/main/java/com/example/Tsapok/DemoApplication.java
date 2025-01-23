@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
-import java.util.ArrayList;
+
 
 @SpringBootApplication
 public class DemoApplication {
@@ -24,11 +24,10 @@ public class DemoApplication {
 	CommandLineRunner run(ApplicationContext context) {
 		return args -> {
 			UserService userService = context.getBean(UserService.class);
-			User user = new User("Danil", "123", "123", new ArrayList<Order>());
 			ProductService productService = context.getBean(ProductService.class);
 			Product product = new Product("Apple", "MacBook", 35000, 2);
 			productService.createProduct(product);
-//			userService.createUser(user);
+			userService.register("test", "test@","test");
 		};
 	}
 

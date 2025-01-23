@@ -2,15 +2,16 @@ package com.example.Tsapok.Model;
 
 import jakarta.persistence.*;
 
-import java.util.UUID;
+
 
 @Entity
 @Table(name ="\"Product\"")
 public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false )
-    private UUID id;
+    private Long id;
+
 
     @Column( name = "name")
     private String name;
@@ -33,10 +34,10 @@ public class Product {
         this.count = count;
 
     }
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public String getName() {

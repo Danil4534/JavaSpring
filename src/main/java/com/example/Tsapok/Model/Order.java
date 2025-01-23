@@ -2,58 +2,74 @@ package com.example.Tsapok.Model;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.Optional;
+
 
 @Entity
 @Table(name = "\"Orders\"")
 
 public class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private UUID id;
+    private Long id;
+
+
 
     @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User userId;
+    @JoinColumn(name = "products")
+    private Product product;
 
-    @OneToMany
-    private List<Product> product;
+    @OneToOne
+    @JoinColumn(name ="users")
+    private User user;
 
     @Column(name="status")
     private String status;
 
+    @Column(name="address")
+    private String address;
+
     @Column(name = "CreateDate")
     private Date CreateDate;
 
-    public Order() {}
 
-    public Order(User userId, List<Product> product, String status) {
-        this.userId = userId;
+    public Order(User user, Product product, String status, String address) {
+        this.user = user;
         this.product = product;
         this.status = status;
+        this.address = address;
         this.CreateDate = new Date();
+
     }
+    public Order() {}
 
 
-    public UUID getId() {
+    public long getId() {
         return id;
     }
-    public void setId(UUID id) {
+    public void setId(long id) {
         this.id = id;
     }
-    public User getUserId() {
-        return userId;
+
+
+    public User getUser() {
+        return user;
     }
-    public void setUserId(User userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-
-
+    public Product getProduct() {
+        return product;
+    }
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+    public String getAddress() {
+        return address;
+    }
     public String getStatus() {
         return status;
     }
@@ -68,11 +84,7 @@ public class Order {
     }
 
 
-    public void setProducts(List<Product> product) {
-        this.product = product;
-    }
-
-    public List<Product> getProducts() {
-        return product;
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

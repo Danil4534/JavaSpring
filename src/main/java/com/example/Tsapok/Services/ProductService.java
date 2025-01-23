@@ -18,11 +18,11 @@ public class ProductService {
     public List<Product> findAll() {
         return productRepository.findAll();
     }
-    public List<Product> findAllById(List<UUID> productIds) {
+    public List<Product> findAllById(List<Long> productIds) {
         return productRepository.findAllById(productIds);
     }
 
-    public Product findById(UUID id) {
+    public Product findById(Long id) {
         Optional<Product> product = productRepository.findById(id);
         return product.orElse(null);
     }
@@ -30,7 +30,7 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public Product updateProduct(UUID id,Product product) {
+    public Product updateProduct(Long id,Product product) {
         Product oldProduct = this.findById(id);
         oldProduct.setName(product.getName());
         oldProduct.setDescription(product.getDescription());
@@ -38,7 +38,7 @@ public class ProductService {
         oldProduct.setCount(product.getCount());
         return productRepository.save(oldProduct);
     }
-    public Product deleteProduct(UUID id) {
+    public Product deleteProduct(Long id) {
         Product oldProduct = this.findById(id);
         productRepository.delete(oldProduct);
         return oldProduct;

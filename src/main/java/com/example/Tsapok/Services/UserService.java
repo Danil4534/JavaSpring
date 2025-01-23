@@ -4,7 +4,11 @@ import com.example.Tsapok.Model.User;
 import com.example.Tsapok.UserRepository;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -19,15 +23,24 @@ public class UserService {
     public List<User> GetAllUsers() {
         return userRepository.findAll();
     }
-    public User getUserById(UUID id) {
+    public User getUserById(Long id) {
         User user = userRepository.findById(id).get();
         return user;
     }
     public User register(String name, String email, String password) throws NoSuchAlgorithmException {
-       User user = new User();
-       user.setName(name);
-       user.setEmail(email);
-       user.setPassword(hashPassword(password));
+            User user= userRepository.findByEmail(email);
+            if (user != null) {
+               throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            }
+            User newUser = createUser(name, email, password);
+            return userRepository.save(newUser);
+    }
+
+    public User createUser (String name, String email, String password) throws NoSuchAlgorithmException {
+        User user = new User();
+        user.setName(name);
+        user.setEmail(email);
+        user.setPassword(hashPassword(password));
         return userRepository.save(user);
     }
     public String login(String email, String password) throws NoSuchAlgorithmException {
@@ -65,14 +78,14 @@ public class UserService {
         }
         return  sb.toString();
     }
-    public User updateUser(User user) {
-        User updatedUser = getUserById(user.getId());
-        updatedUser.setName(user.getName());
-        updatedUser.setEmail(user.getEmail());
-        updatedUser.setPassword(user.getPassword());
-        return userRepository.save(updatedUser);
-    }
-    public void deleteUser(UUID id) {
-        userRepository.deleteById(id);
-    }
+//    public User updateUser(User user) {
+//        User updatedUser = getUserById(user.getId());
+//        updatedUser.setName(user.getName());
+//        updatedUser.setEmail(user.getEmail());
+//        updatedUser.setPassword(user.getPassword());
+//        return userRepository.save(updatedUser);
+//    }
+//    public void deleteUser(UUID id) {
+//        userRepository.deleteById(id);
+//    }
 }

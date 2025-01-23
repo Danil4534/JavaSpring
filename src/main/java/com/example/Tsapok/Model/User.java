@@ -9,32 +9,30 @@ import java.util.UUID;
 @Table(name ="\"User\"")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false )
-    private UUID id;
+    private Long id;
 
     @Column(name = "name")
     private String name;
     @Column(name = "email")
     private String email;
 
+
     @Column(name = "password")
     private String password;
 
-     @OneToMany()
-     @JoinColumn(name="orders", nullable = true)
-     private List<Order> orders;
 
     public User() {
     }
 
-
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }
@@ -53,18 +51,15 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    public List<Order> getOrders() {
-        return orders;
-    }
 
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
-    public User(String name, String email, String password, List<Order> orders) {
+
+
+    public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.orders = orders;
+
+
 
     }
 
