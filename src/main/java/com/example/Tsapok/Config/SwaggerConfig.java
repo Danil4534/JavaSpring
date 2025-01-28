@@ -12,7 +12,9 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI publicApi() {
         return new OpenAPI()
-                .info(new Info().title("API Documentation").version("1.0"))
+                .info(new Info()
+                        .title("API Documentation")
+                        .version("1.0"))
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
                 .components(new io.swagger.v3.oas.models.Components()
                         .addSecuritySchemes("bearerAuth", new SecurityScheme()

@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.security.access.prepost.PreAuthorize;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,22 +21,24 @@ public class OrderController {
     private OrderService orderService;
     @Autowired
     private OrderRepository orderRepository;
-
     @GetMapping()
     public ResponseEntity<List<Order>> orders() {
         List<Order> orders = orderService.getOrders();
         return ResponseEntity.ok(orders);
     }
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/orderStatus/{orderId}")
     public ResponseEntity<String> getOrderStatus(@PathVariable Long orderId) {
         String status = orderService.getOrderStatus(orderId);
         return ResponseEntity.ok(status);
     }
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/createOrder/{productId}/{userId}/{address}")
     public ResponseEntity<Order> createOrder( @PathVariable Long productId, @PathVariable Long userId, @PathVariable String address) {
         Order order = orderService.createOrder(productId, userId, address);
         return ResponseEntity.ok(order);
     }
+    @PreAuthorize("isAuthenticated()")
     @PutMapping("/updateAddress/{id}/{address}")
     public ResponseEntity<Order> updateAddress(@PathVariable Long id, @PathVariable String address) {
         Order order = orderService.getOrderById(id);
@@ -44,6 +46,7 @@ public class OrderController {
         orderRepository.save(order);
         return ResponseEntity.ok(order);
     }
+    @PreAuthorize("isAuthenticated()")
     @PutMapping("/updateOrder/{id}")
     public ResponseEntity<Order> updateOrder(@PathVariable Long id, @RequestBody Order order) {
        try{
@@ -53,6 +56,7 @@ public class OrderController {
            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
        }
     }
+    @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/deleteOrder/{id}")
     public ResponseEntity<Order> deleteOrder(@PathVariable Long id) {
         try{

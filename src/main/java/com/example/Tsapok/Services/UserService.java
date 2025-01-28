@@ -78,14 +78,14 @@ public class UserService {
         }
         return  sb.toString();
     }
-//    public User updateUser(User user) {
-//        User updatedUser = getUserById(user.getId());
-//        updatedUser.setName(user.getName());
-//        updatedUser.setEmail(user.getEmail());
-//        updatedUser.setPassword(user.getPassword());
-//        return userRepository.save(updatedUser);
-//    }
-//    public void deleteUser(UUID id) {
-//        userRepository.deleteById(id);
-//    }
+    public User updateUser(Long id,User user) {
+        User updatedUser = getUserById(id);
+        updatedUser.setName(user.getName());
+        updatedUser.setEmail(user.getEmail());
+        updatedUser.setPassword(user.getPassword());
+        return userRepository.save(updatedUser);
+    }
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
 }

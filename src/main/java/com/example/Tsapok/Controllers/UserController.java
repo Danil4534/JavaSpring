@@ -34,5 +34,15 @@ public  class UserController {
         String userLogin = userService.login(email, password);
         return userLogin;
     }
+    @PutMapping("/updateUser/{id}")
+    public User updateUser(@PathVariable Long id,@RequestBody User user) {
+        userService.updateUser(id, user);
+        return user;
+    }
+    @DeleteMapping("/deleteUser/{id}")
+    public String deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return "User deleted";
+    }
 
 }
