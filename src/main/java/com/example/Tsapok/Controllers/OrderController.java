@@ -1,43 +1,65 @@
 package com.example.Tsapok.Controllers;
 
 import com.example.Tsapok.Model.Order;
-import com.example.Tsapok.Model.User;
+
 import com.example.Tsapok.OrderRepository;
 import com.example.Tsapok.Services.OrderService;
-import jakarta.websocket.server.PathParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import java.util.List;
-import java.util.UUID;
 
-@RequestMapping("/api/orders")
-@RestController
+
+
+@Controller
+@RequestMapping("/orders")
 public class OrderController {
 
     @Autowired
     private OrderService orderService;
     @Autowired
     private OrderRepository orderRepository;
-    @GetMapping()
-    public ResponseEntity<List<Order>> orders() {
+
+    @Operation(summary = "Get all orders")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved list of orders"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @RequestMapping(method = RequestMethod.GET)
+    public String orders(Model model) {
         List<Order> orders = orderService.getOrders();
-        return ResponseEntity.ok(orders);
+        model.addAttribute("orders", orders);
+        return "orders";
     }
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/orderStatus/{orderId}")
-    public ResponseEntity<String> getOrderStatus(@PathVariable Long orderId) {
-        String status = orderService.getOrderStatus(orderId);
-        return ResponseEntity.ok(status);
-    }
+
+
+//   @RequestMapping(method = RequestMethod.POST)
+//    public ResponseEntity<String> getOrderStatus(@PathVariable Long orderId) {
+//        String status = orderService.getOrderStatus(orderId);
+//        return ResponseEntity.ok(status);
+//    }
+@Operation(summary = "Create a new order")
+@ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Successfully created a product"),
+        @ApiResponse(responseCode = "400", description = "Bad request"),
+        @ApiResponse(responseCode = "500", description = "Internal server error")
+})
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/createOrder/{productId}/{userId}/{address}")
     public ResponseEntity<Order> createOrder( @PathVariable Long productId, @PathVariable Long userId, @PathVariable String address) {
         Order order = orderService.createOrder(productId, userId, address);
         return ResponseEntity.ok(order);
     }
+
+
+
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/updateAddress/{id}/{address}")
     public ResponseEntity<Order> updateAddress(@PathVariable Long id, @PathVariable String address) {
@@ -56,15 +78,11 @@ public class OrderController {
            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
        }
     }
+
     @PreAuthorize("isAuthenticated()")
-    @DeleteMapping("/deleteOrder/{id}")
-    public ResponseEntity<Order> deleteOrder(@PathVariable Long id) {
-        try{
-            Order order = orderService.getOrderById(id);
+    @PostMapping("/deleteOrder/{id}")
+    public String deleteOrder(@PathVariable Long id) {
             orderService.deleteOrderById(id);
-            return ResponseEntity.ok(order);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+            return "redirect:/orders";
     }
 }

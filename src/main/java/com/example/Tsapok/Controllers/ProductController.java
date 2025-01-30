@@ -8,13 +8,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
-@RestController
-@RequestMapping("/api/products")
+@Controller
+@RequestMapping("/products")
 public class ProductController {
 
     @Autowired
@@ -25,10 +27,11 @@ public class ProductController {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved list of products"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @GetMapping()
-    public ResponseEntity<List<Product>> products() {
+    @RequestMapping(method = RequestMethod.GET)
+    public String products(Model model) {
         List<Product> products = productService.findAll();
-        return ResponseEntity.ok(products);
+        model.addAttribute("products", products);
+        return "products";
     }
 
     @Operation(summary = "Create a new product")

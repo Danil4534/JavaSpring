@@ -51,10 +51,10 @@ public class OrderService {
         return orderRepository.save(oldOrder);
     }
 
-    public Order deleteOrderById(Long id) {
+    public void deleteOrderById(Long id) {
       Order order = getOrderById(id);
       orderRepository.delete(order);
-      return order;
+
     }
 
 
