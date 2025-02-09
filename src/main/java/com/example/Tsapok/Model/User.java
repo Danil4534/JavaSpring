@@ -1,6 +1,9 @@
 package com.example.Tsapok.Model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.List;
 import java.util.UUID;
@@ -13,15 +16,22 @@ public class User {
     @Column(name = "id", nullable = false )
     private Long id;
 
+
     @Column(name = "name")
     private String name;
+
+    @NotBlank(message = "Email is required")
+    @Email(message = "Invalid email format")
     @Column(name = "email")
     private String email;
 
-
+    @NotBlank(message = "Password is required")
+    @Size(min = 8, message = "Password must be at least 8 characters long")
     @Column(name = "password")
     private String password;
 
+    @OneToMany()
+    private List<Order> orders;
 
     public User() {
     }
@@ -52,6 +62,14 @@ public class User {
         this.password = password;
     }
 
+
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
 
 
     public User(String name, String email, String password) {

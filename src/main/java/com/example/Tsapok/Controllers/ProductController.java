@@ -22,11 +22,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @Operation(summary = "Get all products")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved list of products"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
+
     @RequestMapping(method = RequestMethod.GET)
     public String products(Model model) {
         List<Product> products = productService.findAll();
@@ -34,24 +30,15 @@ public class ProductController {
         return "products";
     }
 
-    @Operation(summary = "Create a new product")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully created a product"),
-            @ApiResponse(responseCode = "400", description = "Bad request"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
+
     @PostMapping("/createProduct")
     public ResponseEntity<Product> createProduct(@RequestBody Product product) {
         Product createdProduct = productService.createProduct(product);
         return ResponseEntity.ok(createdProduct);
     }
 
-    @Operation(summary = "Update an existing product")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully updated the product"),
-            @ApiResponse(responseCode = "404", description = "Product not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
+
+
     @PutMapping("/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
         try {
@@ -62,12 +49,6 @@ public class ProductController {
         }
     }
 
-    @Operation(summary = "Delete an existing product")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully deleted the product"),
-            @ApiResponse(responseCode = "404", description = "Product not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
     @DeleteMapping("/{id}")
     public ResponseEntity<Product> deleteProduct(@PathVariable Long id) {
         try {

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Order</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="w-screen bg-gray-300 flex justify-center items-center h-dvh">
+<div class="w-96 h-auto">
+    <section class="rounded-md p-2">
+        <div class="flex items-center justify-center my-3">
+            <div class="xl:mx-auto shadow-md bg-white rounded-xl border-2 border-solid border-black-200 p-4 xl:w-full xl:max-w-sm 2xl:max-w-md">
+                <h2 class="text-2xl font-bold leading-tight text-center">Create Order</h2>
+                <form class="mt-5" th:action="@{/orders/createOrder}" th:object="${order}"  method="post">
+                    <div class="space-y-4">
+                        <div>
+                            <label for="users" class="text-base font-medium text-gray-900">Select User:</label>
+                            <select id="users" th:field="*{user}">
+                                <option value="" th:text="'Select User'"></option>
+                                <option th:each="user : ${users}" th:text="${user.name}" th:value="${user.id}"></option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-base font-medium text-gray-900">Select Products:</label>
+                            <div class="mt-2">
+                                <div th:each="product : ${products}" class="flex items-center space-x-2">
+                                    <input type="checkbox" th:value="${product}" class="rounded">
+                                    <span th:text="${product.name}"></span> - $<span th:text="${product.price}"></span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div>
+                            <label for="address" class="text-base font-medium text-gray-900">Address:</label>
+                            <input type="text" id="address" name="address" class="w-full p-2 border rounded" required>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div>
+                            <button type="submit"
+                                    class="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold text-white hover:bg-black/80">
+                                Create Order
+                            </button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

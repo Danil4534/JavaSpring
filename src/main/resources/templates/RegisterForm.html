@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"xmlns:th="http://www.thymeleaf.org" >
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
 <head>
     <meta charset="UTF-8">
     <title>Register</title>
@@ -14,8 +14,7 @@
               <h2 class="text-2xl font-bold leading-tight">
                Create account
               </h2>
-        
-              <form class="mt-5" th:action="@{}" method="post">
+              <form class="mt-5" th:action="@{/register}" th:object="${user}" method="post">
                 <div class="space-y-4">
                   <div>
                     <label class="text-base font-medium text-gray-900">
@@ -23,12 +22,13 @@
                     </label>
                     <div class="mt-2">
                       <input
-                        th:field ="*{name}"
+                        th:field="*{name}"
                         placeholder="name"
                         type="text"
                         class="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                         name="name"
                       />
+                      <div th:class="text-red-500" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
                     </div>
                   </div>
                   <div>
@@ -37,12 +37,12 @@
                     </label>
                     <div class="mt-2">
                       <input
-                              th:field="*{email}"
+                        th:field="*{email}"
                         placeholder="Email"
-                        type="email"
                         class="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                         name="email"
                       />
+                      <div th:class="text-red-500" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
                     </div>
                   </div>
                   <div>
@@ -53,20 +53,23 @@
                     </div>
                     <div class="mt-2">
                       <input
+                        th:field="*{password}"
                         placeholder="Password"
                         type="password"
                         class="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                         name="password"
                       />
+                      <div th:class="text-red-500" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
                     </div>
                   </div>
-                  <div>
+                  <div class="w-full flex flex-col justify-center items-center">
                     <button
                       class="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
                       type="submit"
                     >
                       Create Account
                     </button>
+                    <a th:href="@{/}">Login</a>
                   </div>
                 </div>
               </form>

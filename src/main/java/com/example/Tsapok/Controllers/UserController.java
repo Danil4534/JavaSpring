@@ -3,37 +3,69 @@ package com.example.Tsapok.Controllers;
 import com.example.Tsapok.Model.User;
 import com.example.Tsapok.Services.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
-@RequestMapping("/api/users")
-@RestController
 
+@Controller
+@RequestMapping("/")
 public  class UserController {
 
     @Autowired
     private UserService userService;
 
     @SecurityRequirement(name = "bearerAuth")
-    @GetMapping()
+    @GetMapping("/AllUsers")
     public List<User> getAllUsers() {
         return userService.GetAllUsers();
     }
-
-    @PostMapping("/register/{name}/{email}/{password}")
-    public User registerUser(@PathVariable String name,@PathVariable String email, @PathVariable String password) throws NoSuchAlgorithmException {
-        User user = userService.register(name, email, password);
-         return user;
+    @GetMapping("/register")
+    public String register(Model model) {
+        model.addAttribute("user", new User());
+        return "RegisterForm";
     }
 
-    @PostMapping("/login/{email}/{password}")
-    public String login(@PathVariable String email, @PathVariable String password ) throws NoSuchAlgorithmException {
-        String userLogin = userService.login(email, password);
-        return userLogin;
+    @PostMapping("/register")
+    public String registerUser( @ModelAttribute("user") @Valid User user, BindingResult result, Model model ) throws NoSuchAlgorithmException {
+        if (result.hasErrors()) {
+            return "RegisterForm";
+        }
+       User registerUser=userService.register(user.getName(), user.getEmail(), user.getPassword());
+        if (registerUser == null) {
+            model.addAttribute("RegisterError", "Invalid email or password.");
+            return "RegisterForm";
+        }
+        return "redirect:/";
     }
+
+    @GetMapping()
+    public String login(Model model) {
+        model.addAttribute("user", new User());
+        return "LoginForm";
+    }
+
+    @PostMapping("/login")
+    public String login( @ModelAttribute("user") @Valid User user, BindingResult result, Model model) throws NoSuchAlgorithmException {
+        if (result.hasErrors()) {
+            return "LoginForm";
+        }
+
+        String userLogin = userService.login(user.getEmail(), user.getPassword());
+        if (userLogin == null) {
+            model.addAttribute("loginError", "Invalid email or password.");
+            return "LoginForm";
+        }
+
+        return "redirect:/orders";
+    }
+
     @PutMapping("/updateUser/{id}")
     public User updateUser(@PathVariable Long id,@RequestBody User user) {
         userService.updateUser(id, user);

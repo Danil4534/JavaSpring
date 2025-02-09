@@ -3,88 +3,93 @@ package com.example.Tsapok.Model;
 import jakarta.persistence.*;
 
 import java.util.Date;
-import java.util.Optional;
+import java.util.List;
 
 
 @Entity
 @Table(name = "\"Orders\"")
-
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-
-
-    @OneToOne
-    @JoinColumn(name = "products")
-    private Product product;
-
-    @OneToOne
-    @JoinColumn(name ="users")
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name="status")
+    @OneToMany
+    @JoinTable(
+            name = "order_products"
+    )
+    private List<Product> products;
+
+    @Column(name = "status")
     private String status;
 
-    @Column(name="address")
+    @Column(name = "address")
     private String address;
 
-    @Column(name = "CreateDate")
-    private Date CreateDate;
+    @Column(name = "create_date")
+    private Date createDate;
+
+    public Order() {
+
+    }
 
 
-    public Order(User user, Product product, String status, String address) {
+    public Order(User user, List<Product> products, String status, String address) {
         this.user = user;
-        this.product = product;
+        this.products = products;
         this.status = status;
         this.address = address;
-        this.CreateDate = new Date();
-
+        this.createDate = new Date();
     }
-    public Order() {}
 
-
-    public long getId() {
+    public Long getId() {
         return id;
     }
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
-
 
     public User getUser() {
         return user;
     }
+
+    public Long getUserId() {
+        return user.getId();
+    }
+
     public void setUser(User user) {
         this.user = user;
     }
 
-    public Product getProduct() {
-        return product;
+    public List<Product> getProducts() {
+        return products;
     }
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
-    public String getAddress() {
-        return address;
-    }
+
     public String getStatus() {
         return status;
     }
     public void setStatus(String status) {
         this.status = status;
     }
-    public Date getCreateDate() {
-        return CreateDate;
-    }
-    public void setCreateDate(Date createDate) {
-        CreateDate = createDate;
-    }
 
-
+    public String getAddress() {
+        return address;
+    }
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 }

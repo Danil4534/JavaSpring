@@ -45,12 +45,14 @@ public class UserService {
     }
     public String login(String email, String password) throws NoSuchAlgorithmException {
         User user = userRepository.findByEmail(email);
+
         if(user.getPassword().equals(hashPassword(password))){
             String token = generateToken(user);
             return token;
         }
         return null;
     }
+
 
     public String generateToken(User user) {
 

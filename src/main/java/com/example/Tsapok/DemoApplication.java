@@ -1,8 +1,7 @@
 package com.example.Tsapok;
 
-import com.example.Tsapok.Model.Order;
 import com.example.Tsapok.Model.Product;
-import com.example.Tsapok.Model.User;
+
 import com.example.Tsapok.Services.ProductService;
 import com.example.Tsapok.Services.UserService;
 import org.springframework.boot.CommandLineRunner;
@@ -26,8 +25,10 @@ public class DemoApplication {
 			UserService userService = context.getBean(UserService.class);
 			ProductService productService = context.getBean(ProductService.class);
 			Product product = new Product("Apple", "MacBook", 35000, 2);
+
 			productService.createProduct(product);
-			userService.register("test", "test@","test");
+
+			userService.register("test", "test@gmail.com","testtest");
 		};
 	}
 
