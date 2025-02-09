@@ -38,7 +38,8 @@ public class OrderController {
 
     @Autowired
     private ProductService productService;
-
+    @Autowired
+    private OrderRepository orderRepository;
 
 
     @RequestMapping(method = RequestMethod.GET)
@@ -66,7 +67,6 @@ public class OrderController {
             return "createOrder";
         }
          Order newOrder = orderService.createOrder(order.getProducts(),order.getUser(), order.getAddress());
-//            System.out.println(newOrder.getUser().getName());
         if (newOrder == null) {
             model.addAttribute("order", "Error with creating order");
         }
@@ -123,7 +123,9 @@ public class OrderController {
 //
     @PostMapping("/deleteOrder/{id}")
     public String deleteOrder(@PathVariable Long id) {
-            orderService.deleteOrderById(id);
-            return "redirect:/orders";
+        Order order = orderService.getOrderById(id);
+        order.setStatus("deleted");
+        orderRepository.save(order);
+        return "redirect:/orders";
     }
 }

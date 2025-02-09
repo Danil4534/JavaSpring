@@ -1,6 +1,8 @@
 package com.example.Tsapok.Model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.Date;
 import java.util.List;
@@ -28,6 +30,8 @@ public class Order {
     private String status;
 
     @Column(name = "address")
+    @NotBlank(message = "Address is required")
+    @Size(min=5, message="Enter the correct address")
     private String address;
 
     @Column(name = "create_date")
