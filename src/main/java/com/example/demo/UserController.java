@@ -13,8 +13,6 @@ public class UserController {
 
     private  final WebClient webClient;
 
-
-
     public UserController(WebClient.Builder  webClientBuilder) {
         String apiKey = System.getenv("API_KEY");
         this.webClient=webClientBuilder.baseUrl("https://" + apiKey + ".mockapi.io/api/v1/User").build();
