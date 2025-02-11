@@ -49,6 +49,21 @@ public class OrderController {
         return "orders";
     }
 
+    @GetMapping("/editOrder/{id}")
+    public String editOrder(@PathVariable Long id, Model model) {
+        Order editOrder = orderService.getOrderById(id);
+        model.addAttribute("editOrder", editOrder);
+        return "editOrder";
+    }
+    @PostMapping("/update")
+    public String updateOrder(@ModelAttribute("editOrder") Order order) {
+        Order existingOrder = orderService.getOrderById(order.getId());
+        existingOrder.setAddress(order.getAddress());
+        orderService.updateOrder(existingOrder);
+        return "redirect:/orders";
+    }
+
+
     @GetMapping("/createOrder")
     public String createOrder(Model model) {
         List<Product> products = productService.findAll();
@@ -58,7 +73,6 @@ public class OrderController {
         model.addAttribute("products",products );
         return "createOrder";
     }
-
 
 
     @PostMapping("/createOrder")

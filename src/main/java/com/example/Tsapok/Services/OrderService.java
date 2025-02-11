@@ -44,13 +44,10 @@ public class OrderService {
        Optional<Order> order = orderRepository.findById(id);
        return order.map(Order::getStatus).orElse(null);
     }
-//    public Order updateOrder(Long id,Order order) {
-//        Order oldOrder = this.getOrderById(id);
-//        oldOrder.setStatus("Update");
-//        oldOrder.setCreateDate(order.getCreateDate());
-//        oldOrder.setProduct(order.getProduct());
-//        return orderRepository.save(oldOrder);
-//    }
+
+    public void updateOrder(Order order) {
+        orderRepository.save(order);
+    }
 
     public void deleteOrderById(Long id) {
       Order order = getOrderById(id);

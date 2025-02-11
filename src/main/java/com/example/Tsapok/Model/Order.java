@@ -31,7 +31,7 @@ public class Order {
 
     @Column(name = "address")
     @NotBlank(message = "Address is required")
-    @Size(min=5, message="Enter the correct address")
+    @Size(min=3, message="Enter the correct address")
     private String address;
 
     @Column(name = "create_date")
