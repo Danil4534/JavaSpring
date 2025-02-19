@@ -1,13 +1,17 @@
 package com.example.demo;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
 import java.util.Map;
 
 @RestController
@@ -48,7 +52,7 @@ public class OrderController {
                 .map(ResponseEntity::ok);
     }
     @PostMapping("/order/createOrder")
-    public Mono<ResponseEntity<JsonNode>> createUser(@RequestBody Order order) {
+    public Mono<ResponseEntity<JsonNode>> createOrder(@RequestBody Order order) {
         return webClient.post()
                 .bodyValue(order)
                 .retrieve()
@@ -86,4 +90,28 @@ public class OrderController {
                 .map(ResponseEntity::ok);
     }
 
+}
+
+@Aspect
+@Component
+class LoggingAspect {
+    @AfterReturning(pointcut = "execution(* com.example.demo.OrderController.*(..))", returning = "result")
+    public void logMethodArguments(JoinPoint joinPoint, Object result) {
+        String methodName = joinPoint.getSignature().getName();
+        Object[] args = joinPoint.getArgs();
+
+        System.out.println("Method executed "+ methodName + "Arguments: " + Arrays.toString(args));
+        System.out.println("Returned:"+ result);
+    }
+}
+
+@Aspect
+@Component
+class OrderStatusAspect {
+    @Before("execution(* com.example.demo.OrderController.createOrder(..)) && args(order)")
+    public void setPendingStatusBeforeSave(Order order) {
+        if (order.getStatus() == null || order.getStatus().isEmpty()) {
+            order.setStatus("PENDING");
+        }
+    }
 }
