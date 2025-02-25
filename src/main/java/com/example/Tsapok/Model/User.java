@@ -1,5 +1,6 @@
 package com.example.Tsapok.Model;
 
+import com.example.Tsapok.Enum.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -17,13 +18,10 @@ public class User {
     private Long id;
 
 
-    @Column(name = "name")
-    private String name;
 
     @NotBlank(message = "Email is required")
-    @Email(message = "Invalid email format")
-    @Column(name = "email")
-    private String email;
+    @Column(name = "username")
+    private String username;
 
     @NotBlank(message = "Password is required")
     @Size(min = 8, message = "Password must be at least 8 characters long")
@@ -33,8 +31,15 @@ public class User {
     @OneToMany()
     private List<Order> orders;
 
-    public User() {
-    }
+
+  @Column(name = "roles")
+  @ElementCollection(fetch = FetchType.EAGER)
+  @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+  @Enumerated(EnumType.STRING)
+    private List<Role> roles;
+    public List<Role> getRoles() { return roles; }
+    public void setRoles(List<Role> roles) { this.roles = roles; }
+
 
     public Long getId() {
         return id;
@@ -43,17 +48,12 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+
+    public String getUsername() {
+        return username;
     }
-    public void setName(String name) {
-        this.name = name;
-    }
-    public String getEmail() {
-        return email;
-    }
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
     public String getPassword() {
         return password;
@@ -72,13 +72,12 @@ public class User {
     }
 
 
-    public User(String name, String email, String password) {
-        this.name = name;
-        this.email = email;
+    public User(String username, String password, List<Role> roles) {
+
+        this.username = username;
         this.password = password;
-
-
-
+        this.roles = roles;
     }
+    public User() {}
 
 }

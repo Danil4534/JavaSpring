@@ -1,5 +1,6 @@
 package com.example.Tsapok;
 
+import com.example.Tsapok.Enum.Role;
 import com.example.Tsapok.Model.Product;
 
 import com.example.Tsapok.Services.ProductService;
@@ -10,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
+import java.util.List;
 
 
 @SpringBootApplication
@@ -27,8 +29,8 @@ public class DemoApplication {
 			Product product = new Product("Apple", "MacBook", 35000, 2);
 
 			productService.createProduct(product);
-
-			userService.register("test", "test@gmail.com","testtest");
+			List<Role> roles = List.of(Role.ROLE_ADMIN, Role.ROLE_USER);
+			userService.register("test", "testtest", roles);
 		};
 	}
 

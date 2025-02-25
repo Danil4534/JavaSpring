@@ -17,7 +17,7 @@
                             <label for="users" class="text-base font-medium text-gray-900">Select User:</label>
                             <select id="users" th:field="*{user}" class="border border-gray-300 w-full p-2 rounded outline-0 mt-4">
                                 <option value="" th:text="'Select User'"></option>
-                                <option th:each="user : ${users}" th:text="${user.name}" th:value="${user.id}"></option>
+                                <option th:each="user : ${users}" th:text="${user.username}" th:value="${user.id}"></option>
                             </select>
                         </div>
                         <div>
