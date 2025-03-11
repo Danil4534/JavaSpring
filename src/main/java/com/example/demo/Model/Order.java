@@ -3,9 +3,9 @@ package com.example.demo.Model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-
+import org.springframework.data.mongodb.core.mapping.Field;
 import java.util.Date;
-import java.util.List;
+
 
 @Document(collection = "orders")
 public class Order {
@@ -15,8 +15,8 @@ public class Order {
     @DBRef
     private User user;
 
-    @DBRef
-    private List<Product> products;
+    @Field ("product")
+    private Product product;
 
     private String status;
     private String address;
@@ -24,9 +24,9 @@ public class Order {
 
 
 
-    public Order(User user, List<Product> products, String status, String address) {
+    public Order(User user, Product product, String status, String address) {
         this.user = user;
-        this.products = products;
+        this.product = product;
         this.status = status;
         this.address = address;
         this.createDate = new Date();
@@ -44,11 +44,11 @@ public class Order {
     public void setUser(User user) {
         this.user = user;
     }
-    public List<Product> getProducts() {
-        return products;
+    public Product getProduct() {
+        return product;
     }
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setProduct(Product product) {
+        this.product = product;
     }
     public String getStatus() {
         return status;

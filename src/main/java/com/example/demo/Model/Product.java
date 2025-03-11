@@ -22,7 +22,7 @@ public class Product {
     private int count;
 
     public Product() {}
-    public Product(String id, String name, String description, int price, int count) {
+    public Product(String name, String description, int price, int count) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -55,5 +55,7 @@ public class Product {
     public int getCount() {
         return count;
     }
-    public void setCount(int count) {}
+    public void setCount(int count) {
+        this.count = count;
+    }
 }

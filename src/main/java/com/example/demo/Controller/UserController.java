@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping
@@ -19,6 +20,17 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+
+    @GetMapping("/getUser/{id}")
+    public ResponseEntity<User> getUser(@PathVariable String id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            return new ResponseEntity<>(user.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+
     @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userRepository.findAll();
@@ -26,8 +38,8 @@ public class UserController {
     }
 
 
-    @PostMapping ("/register")
-    public ResponseEntity<User> registerUser (String username, String password) {
+    @PostMapping ("/register/{username}/{password}")
+    public ResponseEntity<User> registerUser (@PathVariable String username, @PathVariable String password) {
         User existUser = userRepository.findUserByUsername(username);
         if (existUser == null) {
             User newUser = userService.CreateUser(username, password);

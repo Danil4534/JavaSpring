@@ -15,6 +15,10 @@ public class OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private ProductService productService;
 
     public Order getOrderById(String id) {
         Optional <Order> order = orderRepository.findById(id);
@@ -24,8 +28,10 @@ public class OrderService {
     public List<Order> getAllOrders(){
         return orderRepository.findAll();
     }
-    public Order createOrder(List<Product> products, User user, String address) {
-        Order order = new Order(user,products,"created", address);
+    public Order createOrder(String userId, String productId, String address) {
+        User user = userService.findUserById(userId);
+        Product product = productService.findById(productId);
+        Order order = new Order(user,product,"created", address);
         return orderRepository.save(order);
     }
     public Order updateOrder(Order order) {

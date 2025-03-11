@@ -19,7 +19,7 @@ public class ProductService {
     public Product findById(String id) {
         return productRepository.findById(id).get();
     }
-    public Product CreateProduct(Product product) {
+    public Product createProduct(Product product) {
         return productRepository.save(product);
     }
     public Product UpdateProduct(String id,Product product) {
