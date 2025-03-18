@@ -7,6 +7,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -21,6 +22,7 @@ public class OrderController {
 
     @Autowired
     private EmailService emailService;
+
 
     private  WebClient webClient;
     public OrderController(WebClient.Builder  webClientBuilder) {
@@ -101,9 +103,10 @@ public class OrderController {
 @Component
 class LoggingAspect {
     private final EmailService emailService;
-
-    public LoggingAspect(EmailService emailService) {
+    private final SimpMessagingTemplate messagingTemplate;
+    public LoggingAspect(EmailService emailService, SimpMessagingTemplate messagingTemplate) {
         this.emailService = emailService;
+        this.messagingTemplate = messagingTemplate;
     }
 
     @AfterReturning(pointcut= "execution(* com.example.demo.OrderController.*(..))", returning = "result")
@@ -111,19 +114,21 @@ class LoggingAspect {
         String methodName = joinPoint.getSignature().getName();
         Object[] args = joinPoint.getArgs();
         String logMessage = "Method executed "+ methodName + "Arguments: " + Arrays.toString(args);
-        emailService.sendSimpleMail("OrderController Log", logMessage, System.getenv("EMAIL"));
+        messagingTemplate.convertAndSend("/topic/LoggingAspect", logMessage);
+
+//        emailService.sendSimpleMail("OrderController Log", logMessage, System.getenv("EMAIL"));
         System.out.println("Method executed "+ methodName + "Arguments: " + Arrays.toString(args));
         System.out.println("Returned:"+ result);
     }
-}
 
-@Aspect
-@Component
-class OrderStatusAspect {
     @Before("execution(* com.example.demo.OrderController.createOrder(..)) && args(order)")
     public void setPendingStatusBeforeSave(Order order) {
         if (order.getStatus() == null || order.getStatus().isEmpty()) {
             order.setStatus("PENDING");
         }
+        messagingTemplate.convertAndSend("/topic/orderStatus", "Order status: " + order.getStatus());
     }
 }
+
+
+
