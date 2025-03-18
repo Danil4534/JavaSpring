@@ -18,15 +18,13 @@ public class SecurityConfig{
                 .authorizeHttpRequests(auth ->auth
                         .requestMatchers("/register").permitAll()
                         .requestMatchers("/orders/createOrder").permitAll()
-                        .requestMatchers("/orders").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/orders").permitAll()
+                        .requestMatchers("/websocket").permitAll()
                         .requestMatchers("/orders/deleteOrder/**").hasAnyRole("ADMIN")
-                        .requestMatchers("/orders/editOrder/**").hasAnyRole("ADMIN")
-
-                        .anyRequest().authenticated()
+                        .requestMatchers("/orders/editOrder/**").hasAnyRole("ADMIN", "USER")
+//                        .anyRequest().authenticated()
                       )
-                .logout(logout ->logout
-                        .logoutSuccessUrl("/login?logout")
-                        .permitAll())
+
                 .formLogin(form->form
                         .loginPage("/login")
                         .permitAll()

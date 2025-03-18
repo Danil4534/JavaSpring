@@ -25,14 +25,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         com.example.Tsapok.Model.User user = userService.findUserByUsername(username);
 
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found with username: " + username);
+        }
+
         List<GrantedAuthority> authorities = user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.name()))
                 .collect(Collectors.toList());
+
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getUsername())
                 .password(user.getPassword())
                 .authorities(authorities)
-                .build()
-                ;
+                .build();
     }
 }
