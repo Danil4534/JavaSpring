@@ -24,7 +24,7 @@ public class UserService {
         return userRepository.findById(id).get();
     }
 
-    public  User CreateUser(String username, String password){
+    public User CreateUser(String username, String password){
         User newUser = new User();
         newUser.setUsername(username);
         newUser.setPassword(password);

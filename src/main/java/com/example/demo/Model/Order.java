@@ -69,4 +69,5 @@ public class Order {
         this.createDate = createDate;
     }
 
+    public Order() {}
 }
